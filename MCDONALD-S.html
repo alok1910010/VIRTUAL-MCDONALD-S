@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCDONALD-S</title>
+</head>
+
+
+
+<style>
+
+    
+    #menu{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        border: 5px solid rgb(111, 39, 245);
+    }
+    #main>div{
+        border: rgb(253, 0, 63);
+       
+    }
+    #inside>img{
+        position: relative;
+        width: 80%;
+    }
+    #det{
+            display: none;
+            padding-top: 3%;
+            border-radius: 20px;
+            background-color: rgb(7, 114, 42);
+            position: fixed;
+            margin-left: 30%;
+            width: 40%;
+        color: white;
+        }
+    #det>*{
+       
+    padding-left: 20%;
+
+    }
+    #close{
+      
+        color:white;
+        width: 100%;
+       background-color: black;
+        height: 40px;
+        font-size: 30px;
+    }
+    .order{
+        margin-top: 20px;
+        font-size: 34px;
+        font-weight: 500;
+        background-color: rgb(104, 88, 88);
+        color: white;
+        margin-left:30%;
+        width: 40%;
+        height: 50px;
+    }
+    .o{
+margin: 0;
+
+        position: fixed;
+color: white;
+      
+       
+        width: max-content;
+        height: max-content;
+       
+    }
+</style>
+
+
+<body>
+    <div id="det"></div>
+    <button style="height: 70px;width: 232px;font-size: 40px;font-weight: bold;background-color: rgb(218, 28, 28);margin-bottom: 5px;" onclick="order()">  Go  Order</button>
+    <div id="menu">
+       
+    </div>
+</body>
+
+
+<script>
+
+    var sai = [
+    {
+        price: "55",
+        name: "KABAB BURGER",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Website-600x6001pix-Chicken-Kebab-Burger.png"
+    }, {
+        price: "55",
+        name: "MCALOO TIKKI",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Website-600-600-pix-Mexican-McAloo-Tikki-Burger.png"
+    }, {
+        price: "57",
+        name: "Tikk",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Brioche-wwb.png"
+    }, {
+        price: "55",
+        name: "CHICKEN BURGER",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Website-600x6001pix-Chicken-Kebab-Burger.png"
+    },
+    {
+        price: "55",
+        name: "CHICKEN KABAB ",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Website-600x6001pix-Chicken-Kebab-Burger.png"
+    },
+    {
+        price: "55",
+        name: "MCALOO TIKKI",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Website-600-600-pix-Mexican-McAloo-Tikki-Burger.png"
+    }, {
+        price: "57",
+        name: "Tikk",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Brioche-wwb.png"
+    }, {
+        price: "55",
+        name: "CHICKEN BURGER",
+        img: "https://www.mcdonaldsindia.com/images/products/new/Website-600x6001pix-Chicken-Kebab-Burger.png"
+    },
+
+]
+
+sai.forEach((e) =>
+
+{
+
+    div = document.createElement("div")
+    div.className = 'move'
+    div.innerHTML = `<img class='i' src="${e.img}" alt="">
+<h3>${e.name}</h3>
+<h4>Price :${e.price}</h4>
+<input type="checkbox" class="order"  >`
+    document.getElementById("menu").append(div)
+})
+
+
+var ch = document.querySelectorAll('.move')
+console.log(ch)
+
+data = []
+function order() {
+    sai = 0
+    var fil = document.querySelectorAll('.move')
+    fil.forEach((e, i) => {
+        if (e.lastChild.checked) {
+            var pickname = e.children
+            sai = 1
+            data.push(pickname[1].innerHTML)
+
+        }
+
+
+    })
+    create(data).then((item) => {
+        var o= Math.random()*10000000
+o=o.toFixed(0)
+        var div = document.createElement("div")
+
+        div.innerHTML = `<h3  class='or'>Your Order Placed!</h3>
+        <h3 class='or'>Order Number :2022${o}</h3>`
+
+        item.forEach((e, i) => {
+            var it = document.createElement('h3')
+            it.className = 'or'
+            it.innerText = `${i + 1}  => ${e}.`
+            console.log(it)
+            document.getElementById("det").append(it)
+        })
+        bt = document.createElement("button")
+        bt.innerText = "close"
+        bt.id = "close"
+        bt.addEventListener('click', () => {
+            document.getElementById("det").remove()
+        })
+        document.getElementById("det").append(div, bt)
+        document.getElementById("det").style.display = "block"
+    }
+
+
+    ).catch((err) => {
+        console.log(err)
+        var div = document.createElement("div")
+
+        div.innerHTML = `<h1 class='or'>SORRY ! ${err}</h1>`
+        bt = document.createElement("button")
+        bt.innerText = "close"
+        bt.id = "close"
+        bt.addEventListener('click', () => {
+        window.location.reload()
+            document.getElementById("det").remove()
+
+        })
+
+        document.getElementById("det").append(div, bt)
+        document.getElementById("det").style.display = "block"
+    }
+    )
+}
+
+
+
+
+curtime = new Date().getHours()
+
+
+function create(item) {
+
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            if (curtime >= 9 && curtime <= 21&&sai==1) {
+                res(item)
+            } else {
+                rej("Working Hours  10AM To 10 PM",sai)
+            }
+
+        }, 3000)
+    })
+
+
+}
+
+
+</script>
+
+</html>
